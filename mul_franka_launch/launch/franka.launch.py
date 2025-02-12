@@ -29,7 +29,7 @@ def generate_launch_description():
 
     franka_xacro_file = PathJoinSubstitution(
         [
-            FindPackageShare("franka_description"),
+            FindPackageShare("mul_franka_description"),
             "robots",
             "panda_arm.urdf.xacro",
         ]

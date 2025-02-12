@@ -13,7 +13,7 @@
 
   <exec_depend>realsense2_camera</exec_depend>
 
-  <exec_depend>franka_description</exec_depend>
+  <exec_depend>mul_franka_description</exec_depend>
   <exec_depend>franka_moveit_config</exec_depend>
   <exec_depend>franka_gripper</exec_depend>
 
