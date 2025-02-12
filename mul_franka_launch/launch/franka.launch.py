@@ -47,6 +47,7 @@ def generate_launch_description():
             use_fake_hardware,
             " fake_sensor_commands:=",
             fake_sensor_commands,
+            " add_realsense:=true",
         ]
     )
 
