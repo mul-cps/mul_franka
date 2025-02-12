@@ -26,7 +26,7 @@ def load_yaml(package_name, file_path):
 def generate_launch_description():
     franka_semantic_xacro_file = PathJoinSubstitution(
         [
-            FindPackageShare("franka_moveit_config"),
+            FindPackageShare("mul_franka_description"),
             "srdf",
             "panda_arm.srdf.xacro",
         ]
