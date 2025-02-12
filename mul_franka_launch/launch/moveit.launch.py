@@ -32,7 +32,7 @@ def generate_launch_description():
         ]
     )
     robot_description_semantic_config = Command(
-        [FindExecutable(name="xacro"), " ", franka_semantic_xacro_file, " hand:=true"]
+        [FindExecutable(name="xacro"), " ", franka_semantic_xacro_file, " hand:=true", " add_realsense:=true"]
     )
     robot_description_semantic = {
         "robot_description_semantic": robot_description_semantic_config
