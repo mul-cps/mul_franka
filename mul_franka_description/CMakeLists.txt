@@ -8,7 +8,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 install(DIRECTORY
-  meshes
+  meshes robots
   DESTINATION share/${PROJECT_NAME}/
 )
 
