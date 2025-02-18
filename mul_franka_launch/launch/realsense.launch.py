@@ -135,9 +135,27 @@ def generate_launch_description():
             {"enable_accel": True},
             {"unite_imu_method": 2},  # linear_interpolation
             # point cloud
-            {"pointcloud.enable": True},
+            {"pointcloud.enable": False},
             {"pointcloud.stream_filter": 2}, # RS2_STREAM_COLOR, https://github.com/IntelRealSense/librealsense/blob/v2.56.3/include/librealsense2/h/rs_sensor.h#L43-L57
             {"pointcloud.ordered_pc": True}, # ordered/structured point cloud (W x H x [x,y,z,r,g,b])
+        ],
+    )
+
+    rgbd = ComposableNode(
+        package="depth_image_proc",
+        plugin="depth_image_proc::PointCloudXyzrgbNode",
+        name="rgbd",
+        namespace="",
+        extra_arguments=[
+            {'use_intra_process_comms': True},
+        ],
+        remappings=[
+            # input
+            ("depth_registered/image_rect", "/camera/aligned_depth_to_color/image_raw"),
+            ("rgb/image_rect_color", "/camera/color/image_raw"),
+            ("rgb/camera_info", "/camera/color/camera_info"),
+            # output
+            ("points", "/camera/points"),
         ],
     )
 
@@ -148,6 +166,7 @@ def generate_launch_description():
         executable="component_container",
         composable_node_descriptions=[
             realsense,
+            rgbd,
         ],
         emulate_tty=True,
     )

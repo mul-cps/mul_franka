@@ -12,6 +12,7 @@
   <exec_depend>launch_ros</exec_depend>
 
   <exec_depend>realsense2_camera</exec_depend>
+  <exec_depend>depth_image_proc</exec_depend>
 
   <exec_depend>mul_franka_description</exec_depend>
   <exec_depend>franka_moveit_config</exec_depend>
