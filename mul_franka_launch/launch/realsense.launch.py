@@ -1,5 +1,6 @@
-from launch import LaunchDescription
-from launch_ros.actions import Node
+import launch
+from launch_ros.actions import ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
 
 
 # Parameter name: rgb_camera.color_profile
@@ -90,53 +91,65 @@ compr_png = {
 
 
 def generate_launch_description():
-    return LaunchDescription(
-        [
-            Node(
-                package="realsense2_camera",
-                namespace="",
-                executable="realsense2_camera_node",
-                parameters=[
-                    # compression settings
-                    {
-                        "camera": {
-                            "color.image_raw": {
-                                "enable_pub_plugins": plugins,
-                                "compressed": compr_jpeg,
-                            },
-                            "depth.image_rect_raw": {
-                                "enable_pub_plugins": plugins,
-                                "compressed": compr_png,
-                            },
-                            "aligned_depth_to_color.image_raw": {
-                                "enable_pub_plugins": plugins,
-                                "compressed": compr_png,
-                            },
-                        }
+    realsense = ComposableNode(
+        package="realsense2_camera",
+        name="camera",
+        namespace="",
+        plugin="realsense2_camera::RealSenseNodeFactory",
+        extra_arguments=[
+            {'use_intra_process_comms': True},
+        ],
+        parameters=[
+            # compression settings
+            {
+                "camera": {
+                    "color.image_raw": {
+                        "enable_pub_plugins": plugins,
+                        "compressed": compr_jpeg,
                     },
-                    # colour
-                    {"enable_color": True},
-                    {"rgb_camera.color_profile": "640x480x60"},
-                    {"rgb_camera.enable_auto_exposure": True},
-                    # depth
-                    {"enable_depth": True},
-                    {"depth_module.depth_profile": "640x480x60"},
-                    {"depth_module.enable_auto_exposure": True},
-                    {"align_depth.enable": True},
-                    # IR
-                    {"enable_infra1": False},
-                    {"enable_infra2": False},
-                    # IMU
-                    {"enable_sync": True},
-                    {"enable_gyro": True},
-                    {"enable_accel": True},
-                    {"unite_imu_method": 2},  # linear_interpolation
-                    # point cloud
-                    {"pointcloud.enable": True},
-                    {"pointcloud.stream_filter": 2}, # RS2_STREAM_COLOR, https://github.com/IntelRealSense/librealsense/blob/v2.56.3/include/librealsense2/h/rs_sensor.h#L43-L57
-                    {"pointcloud.ordered_pc": True}, # ordered/structured point cloud (W x H x [x,y,z,r,g,b])
-                ],
-                emulate_tty=True,
-            ),
-        ]
+                    "depth.image_rect_raw": {
+                        "enable_pub_plugins": plugins,
+                        "compressed": compr_png,
+                    },
+                    "aligned_depth_to_color.image_raw": {
+                        "enable_pub_plugins": plugins,
+                        "compressed": compr_png,
+                    },
+                }
+            },
+            # colour
+            {"enable_color": True},
+            {"rgb_camera.color_profile": "640x480x60"},
+            {"rgb_camera.enable_auto_exposure": True},
+            # depth
+            {"enable_depth": True},
+            {"depth_module.depth_profile": "640x480x60"},
+            {"depth_module.enable_auto_exposure": True},
+            {"align_depth.enable": True},
+            # IR
+            {"enable_infra1": False},
+            {"enable_infra2": False},
+            # IMU
+            {"enable_sync": True},
+            {"enable_gyro": True},
+            {"enable_accel": True},
+            {"unite_imu_method": 2},  # linear_interpolation
+            # point cloud
+            {"pointcloud.enable": True},
+            {"pointcloud.stream_filter": 2}, # RS2_STREAM_COLOR, https://github.com/IntelRealSense/librealsense/blob/v2.56.3/include/librealsense2/h/rs_sensor.h#L43-L57
+            {"pointcloud.ordered_pc": True}, # ordered/structured point cloud (W x H x [x,y,z,r,g,b])
+        ],
     )
+
+    container = ComposableNodeContainer(
+        name="image_container",
+        namespace="",
+        package="rclcpp_components",
+        executable="component_container",
+        composable_node_descriptions=[
+            realsense,
+        ],
+        emulate_tty=True,
+    )
+
+    return launch.LaunchDescription([container])
