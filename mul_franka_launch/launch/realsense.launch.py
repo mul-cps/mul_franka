@@ -117,11 +117,11 @@ def generate_launch_description():
                     # colour
                     {"enable_color": True},
                     {"rgb_camera.color_profile": "640x480x60"},
-                    {"rgb_camera.enable_auto_exposure": False},
+                    {"rgb_camera.enable_auto_exposure": True},
                     # depth
                     {"enable_depth": True},
                     {"depth_module.depth_profile": "640x480x60"},
-                    {"depth_module.enable_auto_exposure": False},
+                    {"depth_module.enable_auto_exposure": True},
                     {"align_depth.enable": True},
                     # IR
                     {"enable_infra1": False},
