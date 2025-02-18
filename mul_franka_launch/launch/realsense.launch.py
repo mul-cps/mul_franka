@@ -131,6 +131,10 @@ def generate_launch_description():
                     {"enable_gyro": True},
                     {"enable_accel": True},
                     {"unite_imu_method": 2},  # linear_interpolation
+                    # point cloud
+                    {"pointcloud.enable": True},
+                    {"pointcloud.stream_filter": 2}, # RS2_STREAM_COLOR, https://github.com/IntelRealSense/librealsense/blob/v2.56.3/include/librealsense2/h/rs_sensor.h#L43-L57
+                    {"pointcloud.ordered_pc": True}, # ordered/structured point cloud (W x H x [x,y,z,r,g,b])
                 ],
                 emulate_tty=True,
             ),
