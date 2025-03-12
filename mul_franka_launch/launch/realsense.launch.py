@@ -109,7 +109,9 @@ def generate_launch_description():
         namespace="",
         plugin="realsense2_camera::RealSenseNodeFactory",
         extra_arguments=[
-            {'use_intra_process_comms': True},
+            # The RealSense node does not support compressed image transport
+            # when intra-process communication is enabled.
+            {'use_intra_process_comms': False},
         ],
         parameters=[
             {"camera_name": "camera"},
