@@ -4,7 +4,7 @@ import os
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, Shutdown
-from launch.conditions import UnlessCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (
     Command,
@@ -22,10 +22,12 @@ def generate_launch_description():
     robot_ip_parameter_name = "robot_ip"
     use_fake_hardware_parameter_name = "use_fake_hardware"
     fake_sensor_commands_parameter_name = "fake_sensor_commands"
+    load_controller_parameter_name = "load_controller"
 
     robot_ip = LaunchConfiguration(robot_ip_parameter_name)
     use_fake_hardware = LaunchConfiguration(use_fake_hardware_parameter_name)
     fake_sensor_commands = LaunchConfiguration(fake_sensor_commands_parameter_name)
+    load_controller = LaunchConfiguration(load_controller_parameter_name)
 
     franka_xacro_file = PathJoinSubstitution(
         [
@@ -88,6 +90,12 @@ def generate_launch_description():
         ),
     )
 
+    load_controller_arg = DeclareLaunchArgument(
+        load_controller_parameter_name,
+        default_value="true",
+        description="load the 'panda_arm_controller' on startup",
+    )
+
     robot_state_publisher = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
@@ -125,11 +133,19 @@ def generate_launch_description():
         on_exit=Shutdown(),
     )
 
-    franka_controllers_spawner = Node(
+    joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster", "panda_arm_controller"],
+        arguments=["joint_state_broadcaster"],
         output="screen",
+    )
+
+    panda_arm_controller = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["panda_arm_controller"],
+        output="screen",
+        condition=IfCondition(load_controller),
     )
 
     franka_robot_state_broadcaster_spawner = Node(
@@ -164,12 +180,14 @@ def generate_launch_description():
             robot_arg,
             use_fake_hardware_arg,
             fake_sensor_commands_arg,
+            load_controller_arg,
             # state
             robot_state_publisher,
             joint_state_publisher,
             # controller
             ros2_control_node,
-            franka_controllers_spawner,
+            panda_arm_controller,
+            joint_state_broadcaster,
             franka_robot_state_broadcaster_spawner,
             # launch files
             gripper_launch_file,
