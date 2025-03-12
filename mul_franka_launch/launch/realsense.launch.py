@@ -100,6 +100,7 @@ def generate_launch_description():
             {'use_intra_process_comms': True},
         ],
         parameters=[
+            {"camera_name": "camera"},
             # compression settings
             {
                 "camera": {
