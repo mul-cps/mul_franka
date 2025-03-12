@@ -62,7 +62,7 @@ def generate_launch_description():
 
     # RViz
     rviz_base = os.path.join(
-        get_package_share_directory("franka_moveit_config"), "rviz"
+        get_package_share_directory("mul_franka_launch"), "rviz"
     )
     rviz_full_config = os.path.join(rviz_base, "moveit.rviz")
 
