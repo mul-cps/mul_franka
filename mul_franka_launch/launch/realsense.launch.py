@@ -1,4 +1,6 @@
 import launch
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 
@@ -91,6 +93,16 @@ compr_png = {
 
 
 def generate_launch_description():
+    mode_parameter_name = "mode"
+
+    mode_arg = DeclareLaunchArgument(
+        mode_parameter_name,
+        description="colour and depth mode",
+        default_value="640x480x60",
+    )
+
+    mode = LaunchConfiguration(mode_parameter_name)
+
     realsense = ComposableNode(
         package="realsense2_camera",
         name="camera",
@@ -120,11 +132,11 @@ def generate_launch_description():
             },
             # colour
             {"enable_color": True},
-            {"rgb_camera.color_profile": "640x480x60"},
+            {"rgb_camera.color_profile": mode},
             {"rgb_camera.enable_auto_exposure": True},
             # depth
             {"enable_depth": True},
-            {"depth_module.depth_profile": "640x480x60"},
+            {"depth_module.depth_profile": mode},
             {"depth_module.enable_auto_exposure": True},
             {"align_depth.enable": True},
             # IR
@@ -172,4 +184,4 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
-    return launch.LaunchDescription([container])
+    return launch.LaunchDescription([mode_arg, container])
