@@ -21,11 +21,13 @@ def generate_launch_description():
     use_fake_hardware_parameter_name = "use_fake_hardware"
     fake_sensor_commands_parameter_name = "fake_sensor_commands"
     load_controller_parameter_name = "load_controller"
+    camera_parameter_name = "camera"
 
     robot_ip = LaunchConfiguration(robot_ip_parameter_name)
     use_fake_hardware = LaunchConfiguration(use_fake_hardware_parameter_name)
     fake_sensor_commands = LaunchConfiguration(fake_sensor_commands_parameter_name)
     load_controller = LaunchConfiguration(load_controller_parameter_name)
+    camera = LaunchConfiguration(camera_parameter_name)
 
     franka_xacro_file = PathJoinSubstitution(
         [
@@ -47,7 +49,8 @@ def generate_launch_description():
             use_fake_hardware,
             " fake_sensor_commands:=",
             fake_sensor_commands,
-            " add_realsense:=true",
+            " camera:=",
+            camera,
         ]
     )
 
@@ -92,6 +95,12 @@ def generate_launch_description():
         load_controller_parameter_name,
         default_value="true",
         description="load the 'panda_arm_controller' on startup",
+    )
+
+    camera_arg = DeclareLaunchArgument(
+        camera_parameter_name,
+        default_value="",
+        description="camera model",
     )
 
     robot_state_publisher = Node(
@@ -179,6 +188,7 @@ def generate_launch_description():
             use_fake_hardware_arg,
             fake_sensor_commands_arg,
             load_controller_arg,
+            camera_arg,
             # state
             robot_state_publisher,
             joint_state_publisher,

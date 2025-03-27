@@ -5,7 +5,8 @@
   <xacro:arg name="robot_ip" default=""/> <!-- IP address or hostname of the robot" -->
   <xacro:arg name="use_fake_hardware" default="false"/>
   <xacro:arg name="fake_sensor_commands" default="false"/>
-  <xacro:arg name="add_realsense" default="false"/>
+  <xacro:arg name="camera" default=""/>
+  <xacro:property name="camera" value="$(arg camera)"/>
 
   <xacro:include filename="$(find franka_description)/robots/panda_arm.xacro"/>
   <xacro:panda_arm arm_id="$(arg arm_id)" safety_distance="0.03"/>
@@ -33,7 +34,7 @@
   </xacro:if>
 
   <!-- RealSense camera -->
-  <xacro:if value="$(arg add_realsense)">
+  <xacro:if value="${camera == 'realsense'}">
     <!-- RealSense camera mount -->
     <xacro:include filename="$(find mul_franka_description)/robots/panda_realsense_d435_camera_mount.xacro"/>
     <xacro:panda_realsense_d435_camera_mount arm_id="$(arg arm_id)" connected_to="$(arg arm_id)_link8" xyz="0 0 0.0075" rpy="0 0 ${pi*3/4}"/>

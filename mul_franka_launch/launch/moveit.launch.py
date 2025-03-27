@@ -4,7 +4,8 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import Command, FindExecutable, PathJoinSubstitution, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 import yaml
@@ -24,6 +25,14 @@ def load_yaml(package_name, file_path):
 
 
 def generate_launch_description():
+    camera_parameter_name = "camera"
+    camera = LaunchConfiguration(camera_parameter_name)
+    camera_arg = DeclareLaunchArgument(
+        camera_parameter_name,
+        default_value="",
+        description="camera model",
+    )
+
     franka_semantic_xacro_file = PathJoinSubstitution(
         [
             FindPackageShare("mul_franka_description"),
@@ -32,7 +41,7 @@ def generate_launch_description():
         ]
     )
     robot_description_semantic_config = Command(
-        [FindExecutable(name="xacro"), " ", franka_semantic_xacro_file, " hand:=true", " add_realsense:=true"]
+        [FindExecutable(name="xacro"), " ", franka_semantic_xacro_file, " hand:=true", " camera:=", camera]
     )
     robot_description_semantic = {
         "robot_description_semantic": robot_description_semantic_config
@@ -104,4 +113,4 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription([move_group])
+    return LaunchDescription([camera_arg, move_group])

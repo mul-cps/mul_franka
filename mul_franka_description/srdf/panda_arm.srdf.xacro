@@ -3,7 +3,8 @@
 
   <xacro:arg name="arm_id" default="panda"/> <!-- Name of this panda -->
   <xacro:arg name="hand" default="true"/> <!-- Should a franka_gripper be mounted at the flange? (Currently does not work without it) -->
-  <xacro:arg name="add_realsense" default="false"/>
+  <xacro:arg name="camera" default=""/>
+  <xacro:property name="camera" value="$(arg camera)"/>
 
   <xacro:property name="arm_id" value="$(arg arm_id)"/>
 
@@ -18,7 +19,7 @@
     <xacro:panda_arm_hand arm_id="${arm_id}"/>
   </xacro:if>
 
-  <xacro:if value="$(arg add_realsense)">
+  <xacro:if value="${camera == 'realsense'}">
     <disable_collisions link1="${arm_id}_hand" link2="${arm_id}_realsense_link" reason="Adjacent"/>
     <disable_collisions link1="${arm_id}_hand" link2="${arm_id}_realsense_mount" reason="Adjacent"/>
     <disable_collisions link1="${arm_id}_hand" link2="camera_link" reason="Adjacent"/>
