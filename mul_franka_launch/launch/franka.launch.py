@@ -1,7 +1,5 @@
 # Franka launch file adapted from https://github.com/frankaemika/franka_ros2/blob/v1.0.0/franka_bringup/launch/franka.launch.py
 
-import os
-
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, Shutdown
 from launch.conditions import IfCondition, UnlessCondition
