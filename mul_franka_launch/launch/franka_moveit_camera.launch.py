@@ -14,7 +14,7 @@ def generate_launch_description():
     camera = LaunchConfiguration(camera_parameter_name)
     camera_arg = DeclareLaunchArgument(
         camera_parameter_name,
-        default_value="realsense",
+        default_value="femto",
     )
 
     ip_parameter_name = 'ip'
@@ -55,10 +55,18 @@ def generate_launch_description():
         condition=IfCondition(PythonExpression(["'", camera, "' == 'realsense'"])),
     )
 
+    femto_launch_file = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([
+            PathJoinSubstitution([FindPackageShare("mul_franka_launch"), "launch", "femto.launch.py"])
+        ]),
+        condition=IfCondition(PythonExpression(["'", camera, "' == 'femto'"])),
+    )
+
     return LaunchDescription([
         camera_arg,
         ip_arg,
         franka_launch_file,
         moveit_launch_file,
         realsense_launch_file,
+        femto_launch_file,
     ])
