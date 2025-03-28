@@ -46,4 +46,17 @@
       <origin xyz="0.010025 0 -0.0115" />
     </xacro:sensor_d435>
   </xacro:if>
+
+  <!-- Orbbec Femto camera -->
+  <xacro:if value="${camera == 'femto'}">
+    <!-- Femto Bolt camera mount -->
+    <xacro:include filename="$(find mul_franka_description)/robots/panda_femto_bolt_camera_mount.xacro"/>
+    <xacro:panda_femto_bolt_camera_mount arm_id="$(arg arm_id)" connected_to="$(arg arm_id)_link8" xyz="${sqrt(0.015**2/2)} -${sqrt(0.015**2/2)} 0.01915" rpy="${pi*-1/2} 0 ${pi*-3/4}"/>
+
+    <!-- Femto Bolt camera -->
+    <xacro:include filename="$(find orbbec_description)/urdf/femto_bolt.urdf.xacro" />
+    <xacro:femto_bolt prefix="camera" parent="$(arg arm_id)_femto_mount_tip" use_nominal_extrinsics="false">
+      <origin/>
+    </xacro:femto_bolt>
+  </xacro:if>
 </robot>

@@ -11,6 +11,7 @@
 
   <exec_depend>franka_description</exec_depend>
   <exec_depend>realsense2_description</exec_depend>
+  <exec_depend>orbbec_description</exec_depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

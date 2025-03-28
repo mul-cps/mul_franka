@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="panda_femto_bolt_camera_mount">
+  <xacro:macro name="panda_femto_bolt_camera_mount" params="arm_id connected_to:='' rpy:='0 0 0' xyz:='0 0 0'">
+    <!-- joint connecting robot to camera mount -->
+    <joint name="${arm_id}_femto_mount_arm_joint" type="fixed">
+        <parent link="${connected_to}" />
+        <child link="${arm_id}_femto_mount" />
+        <origin xyz="${xyz}" rpy="${rpy}" />
+    </joint>
+
+    <!-- camera mount -->
+    <link name="${arm_id}_femto_mount">
+      <visual>
+        <geometry>
+          <mesh filename="package://mul_franka_description/meshes/visual/Femto_Bolt_Camera_Mount.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="White"><color rgba="1 1 1 1"/></material>
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://mul_franka_description/meshes/visual/Femto_Bolt_Camera_Mount.stl" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- transformation between the two connection points on the camera mount -->
+    <joint name="${arm_id}_femto_mount_joint" type="fixed">
+      <parent link="${arm_id}_femto_mount" />
+      <child link="${arm_id}_femto_mount_tip" />
+      <origin xyz="0 0 0.02" rpy="0 0 ${-pi/2}"/>
+    </joint>
+
+    <!-- link where to connect camera -->
+    <link name="${arm_id}_femto_mount_tip"/>
+  </xacro:macro>
+</robot>
