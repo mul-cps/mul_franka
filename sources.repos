@@ -1,0 +1,24 @@
+repositories:
+  # base drivers
+  src/libfranka:
+    type: git
+    url: https://github.com/frankaemika/libfranka.git
+    version: 0.9.2
+  src/franka_ros2:
+    type: git
+    url: https://github.com/mul-cps/franka_ros2.git
+    version: fer1
+  src/franka_utils:
+    type: git
+    url: https://github.com/boschresearch/franka_utils.git
+    version: main
+  src/OrbbecSDK_ROS2:
+    type: git
+    url: https://github.com/orbbec/OrbbecSDK_ROS2.git
+    version: main
+
+  # custom MUL setup
+  src/mul_franka:
+    type: git
+    url: https://github.com/mul-cps/mul_franka.git
+    version: main
