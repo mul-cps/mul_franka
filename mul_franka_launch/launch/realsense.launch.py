@@ -108,6 +108,11 @@ def generate_launch_description():
         name="camera",
         namespace="",
         plugin="realsense2_camera::RealSenseNodeFactory",
+        remappings=[
+            ("/camera/aligned_depth_to_color/camera_info", "/camera/depth/camera_info"),
+            ("/camera/aligned_depth_to_color/image_raw", "/camera/depth/image_raw"),
+            ("/camera/aligned_depth_to_color/image_raw/compressed", "/camera/depth/image_raw/compressed"),
+        ],
         extra_arguments=[
             # The RealSense node does not support compressed image transport
             # when intra-process communication is enabled.
@@ -166,7 +171,7 @@ def generate_launch_description():
         ],
         remappings=[
             # input
-            ("depth_registered/image_rect", "/camera/aligned_depth_to_color/image_raw"),
+            ("depth_registered/image_rect", "/camera/depth/image_raw"),
             ("rgb/image_rect_color", "/camera/color/image_raw"),
             ("rgb/camera_info", "/camera/color/camera_info"),
             # output

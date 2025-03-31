@@ -28,6 +28,9 @@ def generate_launch_description():
         name="camera",
         namespace="camera",
         plugin="orbbec_camera::OBCameraNodeDriver",
+        remappings=[
+            ("/camera/gyro_accel/sample", "/camera/imu"),
+        ],
         extra_arguments=[
             {'use_intra_process_comms': False},
         ],
