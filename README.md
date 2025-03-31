@@ -10,6 +10,15 @@
 
 ### Compile ROS 2 Workspace
 
+Run the following commands to build the Franka workspace:
+```sh
+mkdir ~/franka_ws && cd ~/franka_ws
+vcs import --recursive --input https://raw.githubusercontent.com/mul-cps/mul_franka/refs/heads/main/sources.repos
+rosdep install --from-paths src --ignore-src -y --skip-keys=libfranka
+colcon build
+. install/setup.bash
+```
+
 ## Usage
 
 ### Start Sequence
