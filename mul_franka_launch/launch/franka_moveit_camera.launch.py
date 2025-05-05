@@ -24,13 +24,20 @@ def generate_launch_description():
         default_value="192.168.13.1",
     )
 
+    fake_parameter_name = 'fake'
+    fake = LaunchConfiguration(fake_parameter_name)
+    fake_arg = DeclareLaunchArgument(
+        fake_parameter_name,
+        default_value="false",
+    )
+
     franka_launch_file = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([FindPackageShare("mul_franka_launch"), "launch", "franka.launch.py"])
         ]),
         launch_arguments={
             "robot_ip": ip,
-            "use_fake_hardware": "false",
+            "use_fake_hardware": fake,
             "fake_sensor_commands": "false",
             "camera": camera,
         }.items(),
@@ -65,6 +72,7 @@ def generate_launch_description():
     return LaunchDescription([
         camera_arg,
         ip_arg,
+        fake_arg,
         franka_launch_file,
         moveit_launch_file,
         realsense_launch_file,
