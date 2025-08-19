@@ -33,6 +33,18 @@ def generate_launch_description():
         description="camera model",
     )
 
+    move_group_name_parameter_name = "move_group_name"
+    move_group_name = LaunchConfiguration(move_group_name_parameter_name)
+    move_group_name_arg = DeclareLaunchArgument(
+        move_group_name_parameter_name,
+        default_value="panda_arm",
+        choices=[
+            "panda_arm",            # tip: "panda_link8"
+            "panda_manipulator",    # tip: "panda_hand_tcp"
+        ],
+        description="move group name",
+    )
+
     franka_semantic_xacro_file = PathJoinSubstitution(
         [
             FindPackageShare("mul_franka_description"),
@@ -43,9 +55,6 @@ def generate_launch_description():
     robot_description_semantic_config = Command(
         [FindExecutable(name="xacro"), " ", franka_semantic_xacro_file, " hand:=true", " camera:=", camera]
     )
-    robot_description_semantic = {
-        "robot_description_semantic": robot_description_semantic_config
-    }
 
     kinematics_yaml = load_yaml("franka_moveit_config", "config/kinematics.yaml")
 
@@ -98,14 +107,17 @@ def generate_launch_description():
         "publish_transforms_updates": True,
     }
 
+    robot_description_parameters = [
+        {"robot_description_semantic": robot_description_semantic_config},
+        {"robot_description_kinematics": kinematics_yaml},
+        {"robot_description_planning": joint_limits_yaml},
+    ]
+
     move_group = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
-        parameters=[
-            robot_description_semantic,
-            {"robot_description_kinematics": kinematics_yaml},
-            {"robot_description_planning": joint_limits_yaml},
+        parameters=robot_description_parameters+[
             ompl_planning_pipeline_config,
             moveit_controllers,
             trajectory_execution,
@@ -113,4 +125,22 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription([camera_arg, move_group])
+    servo_node = Node(
+        package="moveit_servo",
+        executable="servo_node",
+        name="servo_node",
+        output="screen",
+        parameters=robot_description_parameters+[
+            {"moveit_servo.smoothing_filter_plugin_name": "online_signal_smoothing::AccelerationLimitedPlugin"},
+            {"update_period": 0.01},
+            {"planning_group_name": move_group_name},
+            {"moveit_servo.move_group_name": move_group_name},
+        ],
+    )
+
+    return LaunchDescription([
+        camera_arg,
+        move_group_name_arg,
+        move_group,
+        servo_node,
+    ])
