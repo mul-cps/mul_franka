@@ -15,7 +15,7 @@ repositories:
   src/OrbbecSDK_ROS2:
     type: git
     url: https://github.com/orbbec/OrbbecSDK_ROS2.git
-    version: main
+    version: v2-main
 
   # custom MUL setup
   src/mul_franka:
