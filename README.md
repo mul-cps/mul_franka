@@ -6,7 +6,21 @@
 
 1. install the latest [Ubuntu LTS](https://ubuntu.com/download/desktop)
 2. install the kernel with `PREEMPT_RT` patches: `sudo apt install ubuntu-realtime`
-3. set [realtime permissions](https://support.franka.de/docs/installation_linux.html#installation-real-time) for user
+3. set [realtime permissions](https://frankarobotics.github.io/docs/installation_linux.html#allow-a-user-to-set-real-time-permissions-for-its-processes) for users:
+    ```bash
+    # add user to 'realtime' group
+    sudo addgroup realtime
+    sudo usermod -a -G realtime $USER
+    # set 'realtime' group limits
+    sudo tee -a /etc/security/limits.conf <<EOF
+    @realtime soft rtprio 99
+    @realtime soft priority 99
+    @realtime soft memlock 102400
+    @realtime hard rtprio 99
+    @realtime hard priority 99
+    @realtime hard memlock 102400
+    EOF
+    ```
 4. (optional for CUDA) add the [NVIDIA driver and CUDA repo](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu) (select `deb (network)`) and install the driver package with `IGNORE_PREEMPT_RT_PRESENCE=1 sudo -E apt install cuda-drivers` (you also have to use `IGNORE_PREEMPT_RT_PRESENCE=1` when updating the driver, e.g. `IGNORE_PREEMPT_RT_PRESENCE=1 sudo -E apt upgrade`, or simply add `export IGNORE_PREEMPT_RT_PRESENCE=1` to your `~/.bashrc`)
 
 ### Compile ROS 2 Workspace
