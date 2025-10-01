@@ -5,7 +5,15 @@
 ### Set Up Control PC
 
 1. install the latest [Ubuntu LTS](https://ubuntu.com/download/desktop)
-2. install the kernel with `PREEMPT_RT` patches: `sudo apt install ubuntu-realtime`
+2. install the kernel with `PREEMPT_RT` patches:
+    ```bash
+    sudo apt install ubuntu-realtime
+    ```
+    reboot, and verify that you are running a `PREEMPT_RT` kernel:
+    ```bash
+    uname -v | grep -o PREEMPT_RT
+    cat /sys/kernel/realtime
+    ```
 3. set [realtime permissions](https://frankarobotics.github.io/docs/installation_linux.html#allow-a-user-to-set-real-time-permissions-for-its-processes) for users:
     ```bash
     # add user to 'realtime' group
