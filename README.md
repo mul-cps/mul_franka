@@ -4,7 +4,7 @@
 
 ### Set Up Control PC
 
-1. install the latest [Ubuntu LTS](https://ubuntu.com/download/desktop)
+1. install the latest [Ubuntu LTS](https://ubuntu.com/download/desktop) and [ROS 2 LTS](https://www.ros.org/blog/getting-started/)
 2. install the kernel with `PREEMPT_RT` patches:
     ```bash
     sudo apt install ubuntu-realtime
