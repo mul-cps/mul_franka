@@ -16,6 +16,10 @@ repositories:
     type: git
     url: https://github.com/orbbec/OrbbecSDK_ROS2.git
     version: v2-main
+  src/franka_lock_unlock:
+    type: git
+    url: https://github.com/jk-ethz/franka_lock_unlock.git
+    version: master
 
   # custom MUL setup
   src/mul_franka:
