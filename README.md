@@ -56,7 +56,10 @@ colcon build
 This repo contains a couple of launch files:
 1. [`franka.launch.py`](mul_franka_launch/launch/franka.launch.py): hardware interface and controllers
 2. [`moveit.launch.py`](mul_franka_launch/launch/moveit.launch.py): MoveIt 2 for motion planning
-3. [`rviz.launch.py`](mul_franka_launch/launch/rviz.launch.py): visualisation of the robot state and UI for MoveIt 2
+3. [`realsense.launch.py`](mul_franka_launch/launch/realsense.launch.py): Intel RealSense RGB-D camera
+4. [`femto.launch.py`](mul_franka_launch/launch/femto.launch.py): Orbbec Femto Bolt RGB-D camera
+5. [`franka_moveit_camera.launch.py`](mul_franka_launch/launch/franka_moveit_camera.launch.py): launch Franka interface, MoveIt, and Orbbec Femto camera
+6. [`rviz.launch.py`](mul_franka_launch/launch/rviz.launch.py): visualisation of the robot state and UI for MoveIt 2
 
 
 Once FCI is activated on the robot, you can use these launch files via `ros2 launch`:
