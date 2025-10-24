@@ -71,3 +71,14 @@ ros2 launch mul_franka_launch moveit.launch.py
 # optionally, start RViz
 ros2 launch mul_franka_launch rviz.launch.py
 ```
+
+The `franka_moveit_camera.launch.py` launch file combines the Franka controller with a default IP, MoveIt and the camera node:
+```sh
+ros2 launch mul_franka_launch franka_moveit_camera.launch.py
+```
+
+To test the interface to the Franka robot without hardware, use the launch files as such:
+```sh
+ros2 launch mul_franka_launch franka.launch.py robot_ip:=NONE use_fake_hardware:=true
+ros2 launch mul_franka_launch franka_moveit_camera.launch.py fake:=true
+```
