@@ -46,10 +46,32 @@ colcon build
 
 ### Start Sequence
 
-1. Power on the controller. The lights on the robot will flash yellow. Wait until the lights are solid yellow.
-2. Connect to the Franka Desk Web UI (`https://$ROBOT_IP`).
-3. Unlock the breaks. If the light turn pink, press and release the e-stop. The lights will turn blue.
-4. Activate FCI. This will lock the Web UI and you can now connect to the robot via [libfranka](https://github.com/frankaemika/libfranka) on ip `$ROBOT_IP` and port `1337`.
+Power on the controller. The lights on the robot will flash yellow. Wait until the lights are solid yellow.
+
+Once the robot is booted up, you have to unlock the breaks and activate FCI. This can conveniently be done with the `start.launch.xml` launch file:
+```sh
+export ROBOT_IP="172.16.0.2"
+export FRANKA_USER="franka_desk_user"
+export FRANKA_PASSWORD="franka_desk_password"
+
+ros2 launch franka_lock_unlock start.launch.xml hostname:=$ROBOT_IP username:=$FRANKA_USER password:=$FRANKA_PASSWORD
+```
+If the breaks are not already unlocked, you will now hear how the breaks are unlocked one-by-one. If the light turns pink, press and release the e-stop. The lights will turn blue.
+
+While the `start.launch.xml` launch is running, the robot can be interfaced via FCI. Stopping the launch file, e.g. via Ctrl+C, will engage the breaks again.
+
+To shutdown the robot, run the `shutdown.launch.xml` launch file:
+```sh
+ros2 launch franka_lock_unlock shutdown.launch.xml hostname:=$ROBOT_IP username:=$FRANKA_USER password:=$FRANKA_PASSWORD
+```
+Power off the controller once the shutdown sequence has finished.
+
+Alternatively, you can unlock the breaks and active FCI, and access the settings of the robot, via the Franka Desk:
+
+1. Connect to the Franka Desk Web UI (`https://$ROBOT_IP`).
+2. Unlock the breaks. If the light turn pink, press and release the e-stop. The lights will turn blue.
+3. Activate FCI. This will lock the Web UI and you can now connect to the robot via [libfranka](https://github.com/frankaemika/libfranka) on ip `$ROBOT_IP` and port `1337`.
+
 
 ### Launch Files
 
