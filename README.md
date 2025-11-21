@@ -83,15 +83,19 @@ This repo contains a couple of launch files:
 5. [`franka_moveit_camera.launch.py`](mul_franka_launch/launch/franka_moveit_camera.launch.py): launch Franka interface, MoveIt, and Orbbec Femto camera
 6. [`rviz.launch.py`](mul_franka_launch/launch/rviz.launch.py): visualisation of the robot state and UI for MoveIt 2
 
-Once FCI is activated on the robot, you can use these launch files via `ros2 launch`:
+You can use these individual launch files via `ros2 launch`:
 ```sh
 # start hardware interface, connect to FCI, and start controllers
 ros2 launch mul_franka_launch franka.launch.py robot_ip:=$ROBOT_IP
+# start Orbbec RGB-D camera
+ros2 launch mul_franka_launch femto.launch.py
 # start MoveIt 2
 ros2 launch mul_franka_launch moveit.launch.py
 # optionally, start RViz
 ros2 launch mul_franka_launch rviz.launch.py
 ```
+
+### Using the REAL Hardware via FCI
 
 The `franka_moveit_camera.launch.py` launch file combines the Franka controller with a default IP, MoveIt and the camera node:
 ```sh
@@ -102,6 +106,8 @@ To collect data with the robot in "guiding mode", start the robot without loadin
 ```sh
 ros2 launch mul_franka_launch franka_moveit_camera.launch.py load_controller:=false
 ```
+
+### Using the FAKE Hardware
 
 To test the interface to the Franka robot without hardware, use the launch files as such:
 ```sh
