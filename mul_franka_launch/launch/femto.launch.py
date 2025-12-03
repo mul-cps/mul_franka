@@ -38,6 +38,7 @@ def generate_launch_description():
             {'camera_name': 'camera'},
             {'use_hardware_time': True},
             {'enable_heartbeat': True},
+            {'enable_publish_extrinsic': True},
 
             # compression settings
             {"color.image_raw.enable_pub_plugins": plugins},
