@@ -14,7 +14,7 @@
     uname -v | grep -o PREEMPT_RT
     cat /sys/kernel/realtime
     ```
-3. set [realtime permissions](https://frankarobotics.github.io/docs/installation_linux.html#allow-a-user-to-set-real-time-permissions-for-its-processes) for users:
+3. set [realtime permissions](https://frankarobotics.github.io/docs/libfranka/docs/real_time_kernel.html#allowing-real-time-permissions) for users:
     ```bash
     # add user to 'realtime' group
     sudo addgroup realtime
@@ -30,6 +30,8 @@
     EOF
     ```
 4. (optional for CUDA) add the [NVIDIA driver and CUDA repo](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu) (select `deb (network)`) and install the driver package with `IGNORE_PREEMPT_RT_PRESENCE=1 sudo -E apt install cuda-drivers` (you also have to use `IGNORE_PREEMPT_RT_PRESENCE=1` when updating the driver, e.g. `IGNORE_PREEMPT_RT_PRESENCE=1 sudo -E apt upgrade`, or simply add `export IGNORE_PREEMPT_RT_PRESENCE=1` to your `~/.bashrc`)
+
+For more details on how to interface with the Franka, see https://frankarobotics.github.io/docs/.
 
 ### Compile ROS 2 Workspace
 
