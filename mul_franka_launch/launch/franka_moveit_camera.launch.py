@@ -21,7 +21,7 @@ def generate_launch_description():
     ip = LaunchConfiguration(ip_parameter_name)
     ip_arg = DeclareLaunchArgument(
         ip_parameter_name,
-        default_value="192.168.13.1",
+        default_value="172.16.0.2",
     )
 
     fake_parameter_name = 'fake'
