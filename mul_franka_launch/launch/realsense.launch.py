@@ -147,8 +147,9 @@ def generate_launch_description():
             {"depth_module.enable_auto_exposure": True},
             {"align_depth.enable": True},
             # IR
-            {"enable_infra1": False},
-            {"enable_infra2": False},
+            {"enable_infra1": True},
+            {"enable_infra2": True},
+            {"depth_module.infra_profile": mode},
             # IMU
             {"enable_sync": True},
             {"enable_gyro": True},
