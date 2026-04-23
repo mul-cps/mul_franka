@@ -20,7 +20,7 @@ compr_png = {
 
 def generate_launch_description():
     # parameters:
-    # https://github.com/orbbec/OrbbecSDK_ROS2?tab=readme-ov-file#launch-parameters
+    # https://orbbec.github.io/OrbbecSDK_ROS2/en/source/camera_devices/4_application_guide/launch_parameters.html
     # modes:
     # https://www.orbbec.com/documentation/femto-bolt-hardware-specifications/
     femto = ComposableNode(
