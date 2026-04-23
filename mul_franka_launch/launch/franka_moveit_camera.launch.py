@@ -66,6 +66,9 @@ def generate_launch_description():
         PythonLaunchDescriptionSource([
             PathJoinSubstitution([FindPackageShare("mul_franka_launch"), "launch", "femto.launch.py"])
         ]),
+        launch_arguments={
+            "color_exposure": "100",
+        }.items(),
         condition=IfCondition(PythonExpression(["'", camera, "' == 'femto'"])),
     )
 
