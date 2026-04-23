@@ -1,6 +1,8 @@
 import launch
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, PythonExpression
 
 
 plugins = ["image_transport/raw", "image_transport/compressed"]
@@ -23,6 +25,15 @@ def generate_launch_description():
     # https://orbbec.github.io/OrbbecSDK_ROS2/en/source/camera_devices/4_application_guide/launch_parameters.html
     # modes:
     # https://www.orbbec.com/documentation/femto-bolt-hardware-specifications/
+
+    color_exposure_parameter_name = "color_exposure"
+    color_exposure = LaunchConfiguration(color_exposure_parameter_name)
+    color_exposure_arg = DeclareLaunchArgument(
+        color_exposure_parameter_name,
+        default_value=str(0), # auto-exposure by default
+        description="colour camera exposure time [1, 300]",
+    )
+
     femto = ComposableNode(
         package="orbbec_camera",
         name="camera",
@@ -54,8 +65,9 @@ def generate_launch_description():
             {'color_height': 720},
             {'color_fps': 30},
             {'color_format': 'MJPG'},
-            {'enable_color_auto_exposure': True},
+            {'enable_color_auto_exposure': PythonExpression(['bool(int(', color_exposure, ') == 0)'])},
             {'enable_color_auto_white_balance': True},
+            {'color_exposure': color_exposure},
 
             # depth, NFOV unbinned
             {'enable_depth': True},
@@ -121,4 +133,7 @@ def generate_launch_description():
         emulate_tty=True,
     )
 
-    return launch.LaunchDescription([container])
+    return launch.LaunchDescription([
+        color_exposure_arg,
+        container,
+    ])
