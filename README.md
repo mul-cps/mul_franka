@@ -14,7 +14,7 @@
     uname -v | grep -o PREEMPT_RT
     cat /sys/kernel/realtime
     ```
-3. set [realtime permissions](https://frankarobotics.github.io/docs/libfranka/docs/real_time_kernel.html#allowing-real-time-permissions) for users:
+3. set [realtime permissions](https://frankarobotics.github.io/docs/doc/libfranka/docs/real_time_kernel.html#allowing-real-time-permissions) for users:
     ```bash
     # add user to 'realtime' group
     sudo addgroup realtime
