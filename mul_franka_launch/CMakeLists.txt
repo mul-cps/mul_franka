@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.28)
 project(mul_franka_launch)
 
 find_package(ament_cmake REQUIRED)
