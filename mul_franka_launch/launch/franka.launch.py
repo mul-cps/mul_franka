@@ -132,7 +132,6 @@ def generate_launch_description():
             {"robot_description": robot_description},
             franka_controllers,
         ],
-        remappings=[("joint_states", "franka/joint_states")],
         output={
             "stdout": "screen",
             "stderr": "screen",
@@ -143,14 +142,21 @@ def generate_launch_description():
     joint_state_broadcaster = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["joint_state_broadcaster"],
+        arguments=[
+            '--param-file', franka_controllers,
+            '--controller-ros-args', '--remap joint_states:=/franka/joint_states',
+            "joint_state_broadcaster",
+        ],
         output="screen",
     )
 
     panda_arm_controller = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["panda_arm_controller"],
+        arguments=[
+            '--param-file', franka_controllers,
+            "panda_arm_controller",
+        ],
         output="screen",
         condition=IfCondition(load_controller),
     )
@@ -158,7 +164,10 @@ def generate_launch_description():
     franka_robot_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["franka_robot_state_broadcaster"],
+        arguments=[
+            '--param-file', franka_controllers,
+            "franka_robot_state_broadcaster",
+        ],
         output="screen",
         condition=UnlessCondition(use_fake_hardware),
     )
