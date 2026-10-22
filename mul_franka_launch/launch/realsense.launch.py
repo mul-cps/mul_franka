@@ -127,6 +127,10 @@ def generate_launch_description():
                         "enable_pub_plugins": plugins,
                         "compressed": compr_jpeg,
                     },
+                    "depth.image_raw": {
+                        "enable_pub_plugins": plugins,
+                        "compressed": compr_png,
+                    },
                     "depth.image_rect_raw": {
                         "enable_pub_plugins": plugins,
                         "compressed": compr_png,
