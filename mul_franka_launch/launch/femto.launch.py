@@ -54,9 +54,11 @@ def generate_launch_description():
             # compression settings
             {"color.image_raw.enable_pub_plugins": plugins},
             {"depth.image_raw.enable_pub_plugins": plugins},
+            {"depth.image_unaligned.enable_pub_plugins": plugins},
             {"ir.image_raw.enable_pub_plugins": plugins},
             {".color.image_raw.compressed": compr_jpeg},
             {".depth.image_raw.compressed": compr_png},
+            {".depth.image_unaligned.compressed": compr_png},
             {".ir.image_raw.compressed": compr_png},
 
             # colour
